@@ -1,0 +1,174 @@
+import React from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+
+interface PostStatus {
+  name: string;
+  company: string;
+  status: string;
+  reason: string;
+  action: string;
+  category: 'new' | 'didnt-reply' | 'their-turn' | null;
+}
+
+export default function CampaignPost() {
+  const navigate = useNavigate();
+  const { type } = useParams();
+
+  const post: PostStatus[] = [
+    {
+      name: "Ali G",
+      company: "Hellofresh",
+      status: "Offered to meet CFO",
+      reason: "N/A",
+      action: "Share availability",
+      category: "new"
+    },
+    {
+      name: "James A",
+      company: "Uber",
+      status: "Didn't reply",
+      reason: "Didn't talk in 3 months",
+      action: "Offer to meet",
+      category: "didnt-reply"
+    },
+    {
+      name: "Emily B",
+      company: "Lego",
+      status: "Didn't reply",
+      reason: "3% layoffs in Feb 2025",
+      action: "Email out to CFO",
+      category: "didnt-reply"
+    },
+    {
+      name: "Matthew N",
+      company: "Squarex",
+      status: "Didn't reply",
+      reason: "N/A",
+      action: "Send reminder",
+      category: "didnt-reply"
+    },
+    {
+      name: "Amanda C",
+      company: "Findco",
+      status: "Didn't reply",
+      reason: "N/A",
+      action: "Send reminder",
+      category: "didnt-reply"
+    },
+    {
+      name: "Jay T",
+      company: "Klarna",
+      status: "Asked if they're satisfied with alternative",
+      reason: "likely satisfied with rippling",
+      action: "N/A",
+      category: "their-turn"
+    },
+    {
+      name: "Aaron S",
+      company: "ElevenLabs",
+      status: "Asked if they're satisfied with alternative",
+      reason: "likely satisfied with rippling",
+      action: "N/A",
+      category: "their-turn"
+    }
+  ];
+
+  if (type === 'usage-stopped') {
+    post.unshift({ name: "Dylan F", company: "Nike", status: "blah", reason: "HR managers never completed invoicing form", action: "Email out to CFO", category: "didnt-reply" });
+  } else if (type === 'competitor') {
+    post.unshift({ name: "Max J", company: "Shopify", status: "blah", reason: "Using Rippling for HRIS", action: "N/A", category: "their-turn" });
+  } else if (type === 'manual') {
+    post.unshift({ name: "Rob S", company: "H&M", status: "blah", reason: "Never activated AutoPay option", action: "N/A", category: "their-turn" });
+  }
+  
+  return (
+    <div className="bg-gray-500 w-[800px] h-[600px] p-1">
+      <div className="flex flex-col border border-gray-500 rounded-xl p-4 bg-black shadow-sm h-full">
+        {/* Header */}
+        <div className="flex items-center flex-shrink-0">
+          <div className="w-8 h-8 rounded-full bg-white mr-2"/>
+          <h1 className="text-3xl font-bold text-white">Kai AI</h1>
+        </div>
+
+        {/* Subheader */}
+        <div className="flex-shrink-0">
+          <h1 className="text-xl mt-4 text-white">Manage Usage Campaign - Autopay</h1>
+          <h2 className="text-sm text-gray-400">{
+            type === 'usage-stopped' ? 'Usage Paused' :
+            type === 'competitor' ? 'Using Competitor' :
+            type === 'manual' ? 'Never Used' : 
+            'Unknown'
+          }</h2>
+        </div>
+
+        <div className="mt-4 relative">
+          <div className="overflow-hidden border border-gray-200 rounded-lg">
+            <div className="max-h-[400px] overflow-y-auto">
+              <table className="min-w-full divide-y divide-gray-200">
+                <thead className="bg-gray-50 sticky top-0 z-10">
+                  <tr>
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-10 bg-gray-50">
+                      
+                    </th>
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider bg-gray-50">
+                      Name
+                    </th>
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider bg-gray-50">
+                      Company
+                    </th>
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider bg-gray-50">
+                      Status
+                    </th>
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider bg-gray-50">
+                      Reason
+                    </th>
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider bg-gray-50">
+                      Action
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                  {post.map((competitor, index) => (
+                    <tr key={index} className={`hover:bg-gray-50 ${
+                      competitor.category === 'new' ? 'border-l-4 border-purple-500' :
+                      competitor.category === 'didnt-reply' ? 'border-l-4 border-green-500' :
+                      competitor.category === 'their-turn' ? 'border-l-4 border-blue-500' : ''
+                    }`}>
+                      <td className="px-6 py-4">
+                        <input type="checkbox" className="h-4 w-4 text-blue-600 rounded border-gray-300" />
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                        {competitor.name}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {competitor.company}
+                      </td>
+                      <td className="px-6 py-4 text-sm text-gray-500">
+                        {competitor.status}
+                      </td>
+                      <td className="px-6 py-4 text-sm text-gray-500">
+                        {competitor.reason}
+                      </td>
+                      <td className="px-6 py-4 text-sm text-gray-500">
+                        {competitor.action}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div className="flex items-center mt-4">
+          <button 
+            onClick={() => navigate(-1)}
+            className="text-white hover:text-gray-300"
+          >
+            ← Back
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
