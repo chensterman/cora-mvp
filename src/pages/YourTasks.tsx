@@ -30,7 +30,7 @@ export default function YourTasks() {
         { 
           id: 'task-1', 
           task: 'Max (Shopify) asked to discuss HCRI pricing',
-          action: 'schedule meeting / send quote',
+          action: 'schedule meeting',
           timeAgo: '1 day ago'
         },
         { 
@@ -240,7 +240,7 @@ export default function YourTasks() {
                                     <>
                                       <span className="text-gray-400"> → </span>
                                       <button
-                                        onClick={() => navigate("/")}
+                                        onClick={() => navigate("/action-email/competitor")}
                                         className="text-blue-600 hover:text-blue-800 underline focus:outline-none"
                                       >
                                         {task.action}

@@ -22,7 +22,7 @@ root.render(
     <HashRouter>
       <Routes>
         <Route path="/" element={<App />} />
-        <Route path="/action-email" element={<ActionEmail />} />
+        <Route path="/action-email/:type" element={<ActionEmail />} />
         <Route path="/campaign-list" element={<CampaignList />} />
         <Route path="/campaign-usage" element={<CampaignUsage />} />
         <Route path="/campaign-setup/:type" element={<CampaignSetup />} />

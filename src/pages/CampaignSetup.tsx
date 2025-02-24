@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Button } from '../components/ui/button';
+import { HighlightedTextarea } from "../components/ui/highlightedTextarea";
+import { cn } from '../lib/utils';
 
 interface Target {
   name: string;
@@ -8,58 +10,11 @@ interface Target {
   reason: string;
 }
 
-const HighlightedTextarea: React.FC<{
-  value: string;
-  onChange: (value: string) => void;
-  className?: string;
-}> = ({ value, onChange, className }) => {
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const highlightRef = useRef<HTMLDivElement>(null);
-
-  // Sync scroll position between textarea and highlight div
-  useEffect(() => {
-    const textarea = textareaRef.current;
-    const highlight = highlightRef.current;
-    if (!textarea || !highlight) return;
-
-    const syncScroll = () => {
-      highlight.scrollTop = textarea.scrollTop;
-      highlight.scrollLeft = textarea.scrollLeft;
-    };
-
-    textarea.addEventListener('scroll', syncScroll);
-    return () => textarea.removeEventListener('scroll', syncScroll);
-  }, []);
-
-  // Convert template variables to highlighted spans
-  const highlightedContent = value.replace(
-    /\{\{([^}]+)\}\}/g,
-    (_, variableName) => `<mark class="bg-yellow-200 text-gray-900 px-1 rounded" style="color: inherit;">${variableName}</mark>`
-  );
-
-  return (
-    <div className="relative h-full">
-      <div
-        ref={highlightRef}
-        className="absolute top-0 left-0 right-0 bottom-0 pointer-events-none p-4 whitespace-pre-wrap break-words overflow-auto bg-white h-full"
-        dangerouslySetInnerHTML={{ __html: highlightedContent }}
-      />
-      <textarea
-        ref={textareaRef}
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        className={`relative h-full ${className}`}
-        style={{ color: 'transparent', caretColor: 'black' }}
-      />
-    </div>
-  );
-};
-
 export default function CampaignSetup() {
   const navigate = useNavigate();
   const { type } = useParams();
-
-  const [emailContent, setEmailContent] = useState(`Hey {{Rob}},
+  
+  const nikeEmail = `Hey {{Dylan}},
 
 Hope you're doing well! Since we last spoke in {{January}}, it looks like {{Nike}} stopped using our invoicing. Was that due to any issues with the invoicing process? It seems that some of your HR managers didn’t complete the invoicing form—mainly missing due dates—which may have caused complications.
 
@@ -70,7 +25,40 @@ Some of our international clients using automatic payroll are 65% more likely to
 Let me know if this helps or if you have any questions!
 
 Best,
-Luke`);
+Luke`;
+
+  const shopifyEmail = `Hey {{Max}},
+
+Hope you're doing well! You mentioned that {{Shopify}} is currently using Rippling for HRIS. I wanted to share a case study on Reddit, a company of similar size, that saw significant improvements after switching to Deel for HRIS and Global Payroll. Their HR managers spent 57% less time on HR platforms, and invoicing mistakes decreased by 23%.
+
+If you're interested in exploring our HRIS solutions, we'd love to set up a quick call to walk you through the process!
+
+Let me know if this helps or if you have any questions.
+
+Best,
+Luke`;
+
+  const manualEmail = `Hey {{Rob}},
+
+Hope you're doing well! Since we last spoke in {{September}}, it looks like {{H&M}} hasn’t activated the automatic payroll option yet. Last month, [37%] of your payments were late, and this could be a simple way to prevent that!
+
+If you’re interested in activating it, here’s a tutorial to guide you through the process, along with a draft email you can share with your HR managers once it’s set up.
+
+Some of our clients of your size who use automatic payroll are 62% more likely to pay on time, and their employees report being 32% happier with the HR department. Here’s a case study on Klarna’s experience using automatic payroll.
+
+Let me know if this helps or if you have any questions!
+
+Best,
+Luke`;
+
+  const [emailContent, setEmailContent] = useState(
+    type === 'usage-stopped' ? nikeEmail :
+    type === 'competitor' ? shopifyEmail :
+    type === 'manual' ? manualEmail : 
+    'Unknown'
+  );
+
+
 
   // Sample data - in a real app, this would come from an API
   const targets: Target[] = [
@@ -103,12 +91,12 @@ Luke`);
         {/* Subheader */}
         <div className="flex-shrink-0">
           <h1 className="text-xl mt-4 text-white">Usage Campaign - Autopay</h1>
-          <h2 className="text-sm text-gray-400">{
+          <div className={`px-4 h-8 rounded-full bg-white inline-flex items-center w-fit text-black text-sm font-medium mt-4`}>{
             type === 'usage-stopped' ? 'Usage Paused' :
             type === 'competitor' ? 'Using Competitor' :
             type === 'manual' ? 'Never Used' : 
             'Unknown'
-          }</h2>
+          }</div>
         </div>
 
         {/* Main content */}
@@ -119,7 +107,7 @@ Luke`);
               <HighlightedTextarea
                 value={emailContent}
                 onChange={setEmailContent}
-                className="w-full h-full p-4 border border-gray-500 rounded-lg text-sm resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full h-full border border-gray-500 rounded-lg text-sm resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
             </div>
           </div>
@@ -131,13 +119,13 @@ Luke`);
                 <table className="min-w-full divide-y divide-gray-500">
                   <thead>
                     <tr>
-                      <th scope="col" className="sticky top-0 z-10 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider bg-white border-b border-gray-500">
+                      <th scope="col" className="sticky top-0 z-10 px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider bg-white border-b border-gray-500">
                         Name
                       </th>
-                      <th scope="col" className="sticky top-0 z-10 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider bg-white border-b border-gray-500">
+                      <th scope="col" className="sticky top-0 z-10 px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider bg-white border-b border-gray-500">
                         Company
                       </th>
-                      <th scope="col" className="sticky top-0 z-10 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider bg-white border-b border-gray-500">
+                      <th scope="col" className="sticky top-0 z-10 px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider bg-white border-b border-gray-500">
                         Reason
                       </th>
                     </tr>
@@ -145,13 +133,13 @@ Luke`);
                   <tbody className="bg-white">
                     {[...targets, ...targets, ...targets].map((target, index) => (
                       <tr key={index} className="hover:bg-gray-50">
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                        <td className="px-3 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                           {target.name}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        <td className="px-3 py-4 whitespace-nowrap text-sm text-gray-500">
                           {target.company}
                         </td>
-                        <td className="px-6 py-4 text-sm text-gray-500">
+                        <td className="px-3 py-4 text-sm text-gray-500">
                           {target.reason}
                         </td>
                       </tr>
@@ -172,7 +160,7 @@ Luke`);
             ← Back
           </button>
           <div className="flex-1"/>
-          <Button onClick={() => navigate('/campaign-post/usage-stopped')}>Send Campaign</Button>
+          <Button onClick={() => navigate('/campaign-post/' + type)}>Send Campaign</Button>
         </div>
       </div>
     </div>

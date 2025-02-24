@@ -74,11 +74,11 @@ export default function CampaignPost() {
   ];
 
   if (type === 'usage-stopped') {
-    post.unshift({ name: "Dylan F", company: "Nike", status: "blah", reason: "HR managers never completed invoicing form", action: "Email out to CFO", category: "didnt-reply" });
+    post.unshift({ name: "Dylan F", company: "Nike", status: "Responded stopped using AutoPay because of invoicing issues", reason: "HR managers never completed invoicing form", action: "Email out to CFO", category: "new" });
   } else if (type === 'competitor') {
-    post.unshift({ name: "Max J", company: "Shopify", status: "blah", reason: "Using Rippling for HRIS", action: "N/A", category: "their-turn" });
+    post.unshift({ name: "Max J", company: "Shopify", status: "Asked to discuss HCRI pricing", reason: "Using Rippling for HRIS", action: "Schedule meeting / Send Quote", category: "new" });
   } else if (type === 'manual') {
-    post.unshift({ name: "Rob S", company: "H&M", status: "blah", reason: "Never activated AutoPay option", action: "N/A", category: "their-turn" });
+    post.unshift({ name: "Rob S", company: "H&M", status: "Asked to hear about product roadmap", reason: "Never activated AutoPay option", action: "Email recent product update", category: "new" });
   }
   
   return (
@@ -93,12 +93,12 @@ export default function CampaignPost() {
         {/* Subheader */}
         <div className="flex-shrink-0">
           <h1 className="text-xl mt-4 text-white">Manage Usage Campaign - Autopay</h1>
-          <h2 className="text-sm text-gray-400">{
-            type === 'usage-stopped' ? 'Usage Paused' :
+          <div className={`px-4 h-8 rounded-full bg-white inline-flex items-center w-fit text-black text-sm font-medium mt-4`}>
+            {type === 'usage-stopped' ? 'Usage Paused' :
             type === 'competitor' ? 'Using Competitor' :
             type === 'manual' ? 'Never Used' : 
             'Unknown'
-          }</h2>
+          }</div>
         </div>
 
         <div className="mt-4 relative">
@@ -107,22 +107,22 @@ export default function CampaignPost() {
               <table className="min-w-full divide-y divide-gray-200">
                 <thead className="bg-gray-50 sticky top-0 z-10">
                   <tr>
-                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-10 bg-gray-50">
+                    <th scope="col" className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-10 bg-gray-50">
                       
                     </th>
-                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider bg-gray-50">
+                    <th scope="col" className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider bg-gray-50">
                       Name
                     </th>
-                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider bg-gray-50">
+                    <th scope="col" className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider bg-gray-50">
                       Company
                     </th>
-                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider bg-gray-50">
+                    <th scope="col" className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider bg-gray-50">
                       Status
                     </th>
-                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider bg-gray-50">
+                    <th scope="col" className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider bg-gray-50">
                       Reason
                     </th>
-                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider bg-gray-50">
+                    <th scope="col" className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider bg-gray-50">
                       Action
                     </th>
                   </tr>
@@ -134,23 +134,28 @@ export default function CampaignPost() {
                       competitor.category === 'didnt-reply' ? 'border-l-4 border-green-500' :
                       competitor.category === 'their-turn' ? 'border-l-4 border-blue-500' : ''
                     }`}>
-                      <td className="px-6 py-4">
+                      <td className="px-3 py-4">
                         <input type="checkbox" className="h-4 w-4 text-blue-600 rounded border-gray-300" />
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                      <td className="px-3 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                         {competitor.name}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      <td className="px-3 py-4 whitespace-nowrap text-sm text-gray-500">
                         {competitor.company}
                       </td>
-                      <td className="px-6 py-4 text-sm text-gray-500">
+                      <td className="px-3 py-4 text-sm text-gray-500">
                         {competitor.status}
                       </td>
-                      <td className="px-6 py-4 text-sm text-gray-500">
+                      <td className="px-3 py-4 text-sm text-gray-500">
                         {competitor.reason}
                       </td>
-                      <td className="px-6 py-4 text-sm text-gray-500">
-                        {competitor.action}
+                      <td className="px-3 py-4 text-sm text-gray-500">
+                        <button
+                          onClick={() => navigate(`/action-email/competitor`)}
+                          className="text-blue-600 hover:text-blue-800 underline focus:outline-none"
+                        >
+                          {competitor.action}
+                        </button>
                       </td>
                     </tr>
                   ))}
