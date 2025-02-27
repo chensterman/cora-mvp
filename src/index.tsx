@@ -6,7 +6,8 @@ import App from './App';
 import { HashRouter, Routes, Route } from 'react-router-dom';
 import ActionEmail from './pages/ActionEmail';
 import CampaignList from './pages/CampaignList';
-import CampaignUsage from './pages/CampaignUsage';
+import CampaignListSub from './pages/CampaignListSub';
+import CampaignListSubMetric from './pages/CampaignListSubMetric';
 import CampaignSetup from './pages/CampaignSetup';
 import CampaignPost from './pages/CampaignPost';
 import Roadmap from './pages/Roadmap';
@@ -22,13 +23,14 @@ root.render(
     <HashRouter>
       <Routes>
         <Route path="/" element={<App />} />
-        <Route path="/action-email/:type" element={<ActionEmail />} />
-        <Route path="/campaign-list" element={<CampaignList />} />
-        <Route path="/campaign-usage" element={<CampaignUsage />} />
-        <Route path="/campaign-setup/:type" element={<CampaignSetup />} />
-        <Route path="/campaign-post/:type" element={<CampaignPost />} />
         <Route path="/roadmap" element={<Roadmap />} />
         <Route path="/tasks" element={<YourTasks />} />
+        <Route path="/action-email/:type" element={<ActionEmail />} />
+        <Route path="/campaign-list" element={<CampaignList />} />
+        <Route path="/campaign-list-sub/:type" element={<CampaignListSub />} />
+        <Route path="/campaign-list-sub-metric/:type/:metric" element={<CampaignListSubMetric />} />
+        <Route path="/campaign-setup/:type/:metric/:item" element={<CampaignSetup />} />
+        <Route path="/campaign-post/:type/:metric/:item" element={<CampaignPost />} />
       </Routes>
     </HashRouter>
   </React.StrictMode>

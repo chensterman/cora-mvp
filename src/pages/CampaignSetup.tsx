@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Button } from '../components/ui/button';
 import { HighlightedTextarea } from "../components/ui/highlightedTextarea";
-import { cn } from '../lib/utils';
 
 interface Target {
   name: string;
@@ -12,15 +11,13 @@ interface Target {
 
 export default function CampaignSetup() {
   const navigate = useNavigate();
-  const { type } = useParams();
+  const { type, metric, item } = useParams();
   
   const nikeEmail = `Hey {{Dylan}},
 
-Hope you're doing well! Since we last spoke in {{January}}, it looks like {{Nike}} stopped using our invoicing. Was that due to any issues with the invoicing process? It seems that some of your HR managers didn’t complete the invoicing form—mainly missing due dates—which may have caused complications.
+Hope you're doing well! Since our last conversation in {{January}}, it seems Nike has stopped using autopay. We wanted to flag that {{2,117 Nike employees were paid more than five days late this month—an 87% increase compared to when autopay was in use}}. Was this change due to an invoicing issue? I'd love to help resolve that. Here's a quick tutorial that might make invoicing easier!
 
-To make things easier, here’s a quick tutorial we shared with them to ensure everything is set up correctly and completed.
-
-Some of our international clients using automatic payroll are 65% more likely to pay on time, and their employees report being 42% happier with the HR department. Here’s a case study on Klarna’s experience with automatic payroll.
+Some of our payroll are 65% more likely to pay on time, and their employees report being 42% happier with the HR department. Here's a case study on Klarna's experience with automatic payroll.
 
 Let me know if this helps or if you have any questions!
 
@@ -40,11 +37,11 @@ Luke`;
 
   const manualEmail = `Hey {{Rob}},
 
-Hope you're doing well! Since we last spoke in {{September}}, it looks like {{H&M}} hasn’t activated the automatic payroll option yet. Last month, [37%] of your payments were late, and this could be a simple way to prevent that!
+Hope you're doing well! Since we last spoke in {{September}}, it looks like {{H&M}} hasn't activated the automatic payroll option yet. Last month, [37%] of your payments were late, and this could be a simple way to prevent that!
 
-If you’re interested in activating it, here’s a tutorial to guide you through the process, along with a draft email you can share with your HR managers once it’s set up.
+If you're interested in activating it, here's a tutorial to guide you through the process, along with a draft email you can share with your HR managers once it's set up.
 
-Some of our clients of your size who use automatic payroll are 62% more likely to pay on time, and their employees report being 32% happier with the HR department. Here’s a case study on Klarna’s experience using automatic payroll.
+Some of our clients of your size who use automatic payroll are 62% more likely to pay on time, and their employees report being 32% happier with the HR department. Here's a case study on Klarna's experience using automatic payroll.
 
 Let me know if this helps or if you have any questions!
 
@@ -52,13 +49,11 @@ Best,
 Luke`;
 
   const [emailContent, setEmailContent] = useState(
-    type === 'usage-stopped' ? nikeEmail :
-    type === 'competitor' ? shopifyEmail :
-    type === 'manual' ? manualEmail : 
+    item === 'Usage Paused' ? nikeEmail :
+    item === 'Rippling' ? shopifyEmail :
+    item === 'Never Used' ? manualEmail : 
     'Unknown'
   );
-
-
 
   // Sample data - in a real app, this would come from an API
   const targets: Target[] = [
@@ -71,17 +66,18 @@ Luke`;
     { name: "Aaron S", company: "ElevenLabs", reason: "Competitor evaluation (Rippling) - satisfaction check" }
   ];
 
-  if (type === 'usage-stopped') {
+  if (item === 'Usage Paused') {
     targets.unshift({ name: "Dylan F", company: "Nike", reason: "HR managers never completed invoicing form" });
-  } else if (type === 'competitor') {
+  } else if (item === 'Rippling') {
     targets.unshift({ name: "Max J", company: "Shopify", reason: "Using Rippling for HRIS" });
-  } else if (type === 'manual') {
+  } else if (item === 'Never Used') {
     targets.unshift({ name: "Rob S", company: "H&M", reason: "Never activated AutoPay option" });
   }
   
   return (
     <div className="bg-gray-500 w-[800px] h-[600px] p-1">
       <div className="flex flex-col border border-gray-500 rounded-xl p-4 bg-black shadow-sm h-full">
+        
         {/* Header */}
         <div className="flex items-center flex-shrink-0">
           <div className="w-8 h-8 rounded-full bg-white mr-2"/>
@@ -90,13 +86,11 @@ Luke`;
 
         {/* Subheader */}
         <div className="flex-shrink-0">
-          <h1 className="text-xl mt-4 text-white">Usage Campaign - Autopay</h1>
-          <div className={`px-4 h-8 rounded-full bg-white inline-flex items-center w-fit text-black text-sm font-medium mt-4`}>{
-            type === 'usage-stopped' ? 'Usage Paused' :
-            type === 'competitor' ? 'Using Competitor' :
-            type === 'manual' ? 'Never Used' : 
-            'Unknown'
-          }</div>
+        <h1 className="text-xl mt-4 text-white">Revenue Campaign - {type}</h1>
+          <div className="flex gap-2 mt-4">
+            <div className={`px-4 h-8 rounded-full bg-white inline-flex items-center w-fit text-black text-sm font-medium`}>{metric}</div>
+            <div className={`px-4 h-8 rounded-full bg-white inline-flex items-center w-fit text-black text-sm font-medium`}>{item}</div>
+          </div>
         </div>
 
         {/* Main content */}
@@ -160,7 +154,7 @@ Luke`;
             ← Back
           </button>
           <div className="flex-1"/>
-          <Button onClick={() => navigate('/campaign-post/' + type)}>Send Campaign</Button>
+          <Button onClick={() => navigate(`/campaign-post/${type}/${metric}/${item}`)}>Send Campaign</Button>
         </div>
       </div>
     </div>

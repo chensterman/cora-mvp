@@ -1,15 +1,10 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CampaignCard } from '../components/ui/campaignCard';
+import { UsageCard } from '../components/ui/usageCard';
 
 export default function CampaignList() {
   const navigate = useNavigate();
-  
-  const campaignData = [
-    { name: 'Usage Paused', value: 94 },
-    { name: 'Using Competitor', value: 117 },
-    { name: 'Never Used', value: 68 },
-  ];
 
   return (
     <div className="bg-gray-500 w-[500px] p-1">
@@ -20,32 +15,35 @@ export default function CampaignList() {
           <h1 className="text-3xl font-bold text-white">Kai AI</h1>
         </div>
 
-        <h1 className="text-xl mt-4 text-white">Your Campaigns</h1>
+        <h1 className="text-xl mt-4 text-white">Your Revenue Campaigns</h1>
 
         <CampaignCard
-          title="Autopay"
-          status="Active"
-          data={campaignData}
-          route="/campaign-usage"
+          title="Feature Usage"
+          active={true}
+          route="/campaign-list-sub/Feature Usage"
         />
 
         <CampaignCard
-          title="Workflows"
-          status="Active"
-          data={campaignData}
-          route="/campaign-usage"
+          title="Products"
+          active={true}
+          route="/campaign-list-sub/Products"
         />
 
         <CampaignCard
-          title="Documents"
-          status="Inactive"
-          data={campaignData}
-          route="/campaign-usage"
+          title="Switch to New Feature"
+          active={false}
+          route="/campaign-list-sub/Switch to New Feature"
+        />
+
+        <CampaignCard
+          title="Leadership Change"
+          active={true}
+          route="/campaign-list-sub/Leadership Change"
         />
 
         <div className="flex items-center">
           <button 
-            onClick={() => navigate('/')}
+            onClick={() => navigate(-1)}
             className="text-white hover:text-gray-500"
           >
             ← Back

@@ -22,7 +22,7 @@ export default function Roadmap() {
         { name: "Blind Spot", description: "Identify blind spots in customer engagement", status: "completed" },
         { name: "Prepare for Customer Call", description: "Automated call preparation assistance", status: "in-progress" },
         { name: "Ever boarding", description: "Expand time to value for customers", status: "planned" },
-        { name: "Campaigns", description: "Automated outreach based on usage metrics", status: "completed" },
+        { name: "Revenue Campaigns", description: "Automated outreach based on revenue-driving factos.", status: "completed" },
         { name: "Create Case Studies", description: "Document customer success stories", status: "planned" },
         { name: "Upsell Opportunities", description: "Identify potential upsell candidates", status: "in-progress" }
       ]
@@ -51,7 +51,6 @@ export default function Roadmap() {
         {/* Subheader */}
         <div className="flex-shrink-0">
           <h1 className="text-xl mt-4 text-white">Product Roadmap</h1>
-          <h2 className="text-sm text-gray-400">Feature Categories</h2>
         </div>
 
         {/* Categories */}
@@ -67,7 +66,7 @@ export default function Roadmap() {
                     onClick={() => {
                       if (feature.name === "Blind Spot") {
                         navigate('/tasks');
-                      } else if (feature.name === "Campaigns") {
+                      } else if (feature.name === "Revenue Campaigns") {
                         navigate('/campaign-list');
                       }
                     }}

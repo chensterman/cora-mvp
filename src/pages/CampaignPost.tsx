@@ -12,7 +12,7 @@ interface PostStatus {
 
 export default function CampaignPost() {
   const navigate = useNavigate();
-  const { type } = useParams();
+  const { type, metric, item } = useParams();
 
   const post: PostStatus[] = [
     {
@@ -73,11 +73,11 @@ export default function CampaignPost() {
     }
   ];
 
-  if (type === 'usage-stopped') {
+  if (item === 'Usage Paused') {
     post.unshift({ name: "Dylan F", company: "Nike", status: "Responded stopped using AutoPay because of invoicing issues", reason: "HR managers never completed invoicing form", action: "Email out to CFO", category: "new" });
-  } else if (type === 'competitor') {
+  } else if (item === 'Rippling') {
     post.unshift({ name: "Max J", company: "Shopify", status: "Asked to discuss HCRI pricing", reason: "Using Rippling for HRIS", action: "Schedule meeting / Send Quote", category: "new" });
-  } else if (type === 'manual') {
+  } else if (item === 'Never Used') {
     post.unshift({ name: "Rob S", company: "H&M", status: "Asked to hear about product roadmap", reason: "Never activated AutoPay option", action: "Email recent product update", category: "new" });
   }
   
@@ -92,13 +92,11 @@ export default function CampaignPost() {
 
         {/* Subheader */}
         <div className="flex-shrink-0">
-          <h1 className="text-xl mt-4 text-white">Manage Usage Campaign - Autopay</h1>
-          <div className={`px-4 h-8 rounded-full bg-white inline-flex items-center w-fit text-black text-sm font-medium mt-4`}>
-            {type === 'usage-stopped' ? 'Usage Paused' :
-            type === 'competitor' ? 'Using Competitor' :
-            type === 'manual' ? 'Never Used' : 
-            'Unknown'
-          }</div>
+        <h1 className="text-xl mt-4 text-white">Revenue Campaign - {type}</h1>
+          <div className="flex gap-2 mt-4">
+            <div className={`px-4 h-8 rounded-full bg-white inline-flex items-center w-fit text-black text-sm font-medium`}>{metric}</div>
+            <div className={`px-4 h-8 rounded-full bg-white inline-flex items-center w-fit text-black text-sm font-medium`}>{item}</div>
+          </div>
         </div>
 
         <div className="mt-4 relative">
@@ -107,9 +105,6 @@ export default function CampaignPost() {
               <table className="min-w-full divide-y divide-gray-200">
                 <thead className="bg-gray-50 sticky top-0 z-10">
                   <tr>
-                    <th scope="col" className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-10 bg-gray-50">
-                      
-                    </th>
                     <th scope="col" className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider bg-gray-50">
                       Name
                     </th>
@@ -134,9 +129,6 @@ export default function CampaignPost() {
                       competitor.category === 'didnt-reply' ? 'border-l-4 border-green-500' :
                       competitor.category === 'their-turn' ? 'border-l-4 border-blue-500' : ''
                     }`}>
-                      <td className="px-3 py-4">
-                        <input type="checkbox" className="h-4 w-4 text-blue-600 rounded border-gray-300" />
-                      </td>
                       <td className="px-3 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                         {competitor.name}
                       </td>
@@ -151,7 +143,7 @@ export default function CampaignPost() {
                       </td>
                       <td className="px-3 py-4 text-sm text-gray-500">
                         <button
-                          onClick={() => navigate(`/action-email/competitor`)}
+                          onClick={() => navigate(`/action-email/active`)}
                           className="text-blue-600 hover:text-blue-800 underline focus:outline-none"
                         >
                           {competitor.action}

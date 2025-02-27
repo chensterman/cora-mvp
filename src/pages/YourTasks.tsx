@@ -240,7 +240,7 @@ export default function YourTasks() {
                                     <>
                                       <span className="text-gray-400"> → </span>
                                       <button
-                                        onClick={() => navigate("/action-email/competitor")}
+                                        onClick={() => navigate("/action-email/active")}
                                         className="text-blue-600 hover:text-blue-800 underline focus:outline-none"
                                       >
                                         {task.action}

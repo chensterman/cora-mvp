@@ -99,7 +99,7 @@ export default function ActionEmail() {
             ← Back
           </button>
           <div className="flex-1"/>
-          <Button onClick={() => navigate(-1)}>Send Email</Button>
+          <Button onClick={() => navigate(-1)}>Send Campaign</Button>
         </div>
       </div>
     </div>
